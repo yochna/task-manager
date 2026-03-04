@@ -1,57 +1,59 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import TaskForm from '../components/TaskForm'
 import TaskList from '../components/TaskList'
 import '../Dashboard.css'
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000'
+
+const getHeaders = () => ({
+  Authorization: `Bearer ${localStorage.getItem('token')}`
+})
+
 export default function Dashboard() {
   const [tasks, setTasks] = useState([])
   const [editTask, setEditTask] = useState(null)
   const [filter, setFilter] = useState('all')
   const navigate = useNavigate()
-//   const name = localStorage.getItem('name')
-  const token = localStorage.getItem('token')
-  const headers = { Authorization: `Bearer ${token}` }
 
-  const fetchTasks = async () => {
+  const logout = useCallback(() => {
+    localStorage.clear()
+    navigate('/login')
+  }, [navigate])
+
+  const fetchTasks = useCallback(async () => {
     try {
-     const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/tasks`, { headers })
+      const res = await axios.get(`${API_URL}/api/tasks`, { headers: getHeaders() })
       setTasks(res.data)
     } catch (err) {
       if (err.response?.status === 401) logout()
     }
-  }
+  }, [logout])
 
-useEffect(() => { 
-  fetchTasks() 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [])
+  useEffect(() => {
+    fetchTasks()
+  }, [fetchTasks])
 
   const addTask = async (task) => {
-    await axios.post('http://localhost:5000/api/tasks', task, { headers })
+    await axios.post(`${API_URL}/api/tasks`, task, { headers: getHeaders() })
     fetchTasks()
   }
 
   const updateTask = async (id, updated) => {
-    await axios.put(`http://localhost:5000/api/tasks/${id}`, updated, { headers })
+    await axios.put(`${API_URL}/api/tasks/${id}`, updated, { headers: getHeaders() })
     setEditTask(null)
     fetchTasks()
   }
 
   const deleteTask = async (id) => {
-    await axios.delete(`http://localhost:5000/api/tasks/${id}`, { headers })
+    await axios.delete(`${API_URL}/api/tasks/${id}`, { headers: getHeaders() })
     fetchTasks()
   }
 
   const toggleComplete = async (task) => {
-    await axios.put(`http://localhost:5000/api/tasks/${task._id}`, { completed: !task.completed }, { headers })
+    await axios.put(`${API_URL}/api/tasks/${task._id}`, { completed: !task.completed }, { headers: getHeaders() })
     fetchTasks()
-  }
-
-  const logout = () => {
-    localStorage.clear()
-    navigate('/login')
   }
 
   const filteredTasks = tasks.filter(t => {
