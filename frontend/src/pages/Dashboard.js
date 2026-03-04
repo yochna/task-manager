@@ -10,7 +10,7 @@ export default function Dashboard() {
   const [editTask, setEditTask] = useState(null)
   const [filter, setFilter] = useState('all')
   const navigate = useNavigate()
-  const name = localStorage.getItem('name')
+//   const name = localStorage.getItem('name')
   const token = localStorage.getItem('token')
   const headers = { Authorization: `Bearer ${token}` }
 
@@ -23,7 +23,7 @@ export default function Dashboard() {
     }
   }
 
-  useEffect(() => { fetchTasks() }, [])
+ useEffect(() => { fetchTasks() }, [])
 
   const addTask = async (task) => {
     await axios.post('http://localhost:5000/api/tasks', task, { headers })
