@@ -16,7 +16,7 @@ export default function Dashboard() {
 
   const fetchTasks = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/tasks', { headers })
+     const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/tasks`, { headers })
       setTasks(res.data)
     } catch (err) {
       if (err.response?.status === 401) logout()
