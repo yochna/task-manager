@@ -7,7 +7,11 @@ const app = express()
 const PORT = process.env.PORT || 5000
 
 app.use(cors({
-  origin: ['https://task-manager-ei18.vercel.app', 'http://localhost:3000'],
+  origin: [
+    'https://task-manager-447e.vercel.app',
+    'https://task-manager-ei18.vercel.app',
+    'http://localhost:3000'
+  ],
   credentials: true
 }))
 app.use(express.json())
