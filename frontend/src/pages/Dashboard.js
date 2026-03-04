@@ -23,7 +23,10 @@ export default function Dashboard() {
     }
   }
 
- useEffect(() => { fetchTasks() }, [])
+useEffect(() => { 
+  fetchTasks() 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [])
 
   const addTask = async (task) => {
     await axios.post('http://localhost:5000/api/tasks', task, { headers })
