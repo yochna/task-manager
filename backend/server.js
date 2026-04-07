@@ -15,9 +15,21 @@ const PORT = process.env.PORT || 5000
 //   credentials: true
 // }))
 
+// 1. Delete your old CORS block and replace it with this:
+app.use(cors()); 
 
-app.use(cors({ origin: true, credentials: true }));
-app.options('*', cors()); // Enable pre-flight for all routes
+// 2. Instead of the app.options('*') that crashed, use this middleware:
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  
+  // Handle the Preflight check manually to avoid the Express 5 router crash
+  if (req.method === 'OPTIONS') {
+    return res.status(200).json({});
+  }
+  next();
+});
 app.use(express.json())
 
 // Routes
