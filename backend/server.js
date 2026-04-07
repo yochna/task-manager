@@ -6,14 +6,18 @@ const mongoose = require("mongoose")
 const app = express()
 const PORT = process.env.PORT || 5000
 
-app.use(cors({
-  origin: [
-    'https://task-manager-two-ochre.vercel.app', // <--- Add this new one!
-    'https://task-manager-447e.vercel.app',
-    'http://localhost:3000'
-  ],
-  credentials: true
-}))
+// app.use(cors({
+//   origin: [
+//     'https://task-manager-two-ochre.vercel.app', // <--- Add this new one!
+//     'https://task-manager-447e.vercel.app',
+//     'http://localhost:3000'
+//   ],
+//   credentials: true
+// }))
+
+
+app.use(cors({ origin: true, credentials: true }));
+app.options('*', cors()); // Enable pre-flight for all routes
 app.use(express.json())
 
 // Routes
