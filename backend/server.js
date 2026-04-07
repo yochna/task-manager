@@ -8,8 +8,8 @@ const PORT = process.env.PORT || 5000
 
 app.use(cors({
   origin: [
+    'https://task-manager-two-ochre.vercel.app', // <--- Add this new one!
     'https://task-manager-447e.vercel.app',
-    'https://task-manager-ei18.vercel.app',
     'http://localhost:3000'
   ],
   credentials: true
