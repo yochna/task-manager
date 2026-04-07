@@ -12,7 +12,9 @@ export default function Login() {
     setError('')
     setLoading(true)
     try {
-const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, form)
+
+const res = await axios.post(`https://task-manager-jl2h.onrender.com/api/auth/login`, form);
+// const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, form)
       localStorage.setItem('token', res.data.token)
       localStorage.setItem('name', res.data.name)
       navigate('/dashboard')
